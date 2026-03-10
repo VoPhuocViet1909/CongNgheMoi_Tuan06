@@ -1,0 +1,101 @@
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-info-circle"></i> Chi Tiết Sản Phẩm
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <% if (product.image) { %>
+                        <img src="<%= product.image %>" class="img-fluid rounded shadow-sm" 
+                             alt="<%= product.name %>">
+                        <% } else { %>
+                        <div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                             style="height: 300px;">
+                            <i class="fas fa-image fa-5x text-muted"></i>
+                        </div>
+                        <% } %>
+                    </div>
+                    <div class="col-md-7">
+                        <h2 class="mb-4"><%= product.name %></h2>
+                        
+                        <div class="mb-3">
+                            <h5 class="text-muted">
+                                <i class="fas fa-dollar-sign"></i> Giá:
+                            </h5>
+                            <h3 class="text-danger">
+                                <%= product.price.toLocaleString('vi-VN') %>đ
+                            </h3>
+                        </div>
+
+                        <div class="mb-3">
+                            <h5 class="text-muted">
+                                <i class="fas fa-boxes"></i> Số lượng:
+                            </h5>
+                            <h4>
+                                <span class="badge bg-primary fs-5">
+                                    <%= product.quantity %> sản phẩm
+                                </span>
+                            </h4>
+                        </div>
+
+                        <div class="mb-3">
+                            <h5 class="text-muted">
+                                <i class="fas fa-barcode"></i> Mã sản phẩm:
+                            </h5>
+                            <code><%= product.ID %></code>
+                        </div>
+
+                        <% if (product.createdAt) { %>
+                        <div class="mb-3">
+                            <h5 class="text-muted">
+                                <i class="fas fa-calendar-plus"></i> Ngày tạo:
+                            </h5>
+                            <p><%= new Date(product.createdAt).toLocaleString('vi-VN') %></p>
+                        </div>
+                        <% } %>
+
+                        <% if (product.updatedAt) { %>
+                        <div class="mb-3">
+                            <h5 class="text-muted">
+                                <i class="fas fa-calendar-check"></i> Cập nhật lần cuối:
+                            </h5>
+                            <p><%= new Date(product.updatedAt).toLocaleString('vi-VN') %></p>
+                        </div>
+                        <% } %>
+
+                        <hr>
+
+                        <div class="d-grid gap-2 d-md-flex">
+                            <a href="/products" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Quay lại
+                            </a>
+                            <a href="/products/<%= product.ID %>/edit" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Chỉnh sửa
+                            </a>
+                            <button type="button" class="btn btn-danger" 
+                                    onclick="deleteProduct('<%= product.ID %>', '<%= product.name %>')">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteProduct(id, name) {
+    if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${name}"?`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/products/${id}/delete`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
